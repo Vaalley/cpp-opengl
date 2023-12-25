@@ -1,5 +1,5 @@
 # Learning OpenGL :)
 
-### Command to compile and run:
+## Command to compile and run:
 
-`sudo g++ learning-opengl.cpp glad.c -ldl -lglfw -o learning-opengl && ./learning-opengl`
+`make` and `make clean` clean up the compiled files
