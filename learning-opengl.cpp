@@ -15,11 +15,11 @@ int main()
 {   
     // Initialize GLFW
     glfwInit();
+
     // Tell GLFW what version and what profile of OpenGL we are using
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 
     // If on MacOS, also set forward compatibility to true
     #ifdef __APPLE__
@@ -27,27 +27,34 @@ int main()
     #endif
 
     // Create window
-    GLFWwindow* window = glfwCreateWindow(800, 600, "LearnOpenGL", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(800, 600, "Learning OpenGL", NULL, NULL);
     if (window == NULL)
     {
         std::cout << "Failed to create GLFW window\n";
         glfwTerminate();
         return -1;
     }
+    // Introduce the window into the current context
     glfwMakeContextCurrent(window);
 
     // Load GLAD
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-    {
-        std::cout << "Failed to initialize GLAD\n";
-        return -1;
-    }
+    gladLoadGL();
 
     glViewport(0, 0, WIDTH, HEIGHT);
 
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);  
+    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glfwSwapBuffers(window);
+
+    // Main while loop
+    while (!glfwWindowShouldClose(window))
+    {
+        // glfwSwapBuffers(window);
+        glfwPollEvents();
+    }
 
 
+    glfwDestroyWindow(window);
     glfwTerminate();
     return 0;
 }
