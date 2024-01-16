@@ -1,35 +1,85 @@
 # Learning OpenGL :)
 
-## Command to compile and run
+## Commands to compile run and clean the output file
 
-`make` and `make clean` clean up the compiled files
+`make` compiles the source code and runs the executable. `make clean` cleans up the compiled file.
 
-## How to setup OpenGL
+## OpenGL Setup Guide for Arch Linux
 
-### Install dependencies
+This guide will take you through the steps to set up a new OpenGL project on Arch Linux using GLFW for window management and input, and GLAD for OpenGL function loading.
 
-```shell
-sudo apt-get update
-sudo apt-get install libglu1-mesa-dev freeglut3-dev mesa-common-dev
-sudo apt-get install libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev
+## Update Your System
+
+Ensure that your system's package list and installed packages are up-to-date:
+
+```bash
+sudo pacman -Syu
 ```
 
-### Setup GLFW
+### Install Development Tools
 
-```shell
-cd /usr/local/lib/
-git clone https://github.com/glfw/glfw.git
-cd glfw
-cmake .
-make
-sudo make install
+Install the `base-devel` group of packages which includes the gcc compiler, make, and other development tools:
+
+```bash
+sudo pacman -S base-devel
 ```
 
-### Setup GLAD
+### Install OpenGL Libraries
 
-- Go here: <https://glad.dav1d.de/>
-- Select version 3.3 or higher
-- Select Core profile
-- Click on Generate and download the zip file
-- Copy the folders inside include (glad and KHR) into your include(s) directory: `cp -R include/\* /usr/include/`
-- Copy the file glad.c inside the src folder to your current working directory.
+Mesa is the open-source implementation of OpenGL. Install it with:
+
+```bash
+sudo pacman -S mesa
+```
+
+### Install GLFW
+
+GLFW is a library that allows the creation of windows with an OpenGL context and manages input. Install it with:
+
+```bash
+sudo pacman -S glfw
+```
+
+### Generate and Install GLAD
+
+GLAD is used to load OpenGL functions. Generate the GLAD loader for your OpenGL version using the Glad web service (https://glad.dav1d.de/), then download and include the files in your project.
+
+### Setup Your Project Structure
+
+Create a new directory for your project with the following structure:
+
+```plaintext
+project_name/
+│
+├── include/
+│   ├── glad/
+│   │   └── glad.h
+│   └── KHR/
+│       └── khrplatform.h
+│
+├── src/
+│   └── glad.c
+│
+├── main.cpp
+└── Makefile
+```
+
+### Write Your Makefile
+
+Create a `Makefile` in your project root that compiles your source code:
+
+```makefile
+CC=g++
+CFLAGS=-Iinclude
+LDFLAGS=-ldl -lglfw
+TARGET=learning-opengl
+
+all:
+    $(CC) main.cpp src/glad.c $(CFLAGS) $(LDFLAGS) -o $(TARGET)
+    ./$(TARGET)
+
+clean:
+    rm -f $(TARGET)
+```
+
+Remember to replace placeholder values such as `project_name` and `learning-opengl` with your actual project name and desired executable name. The `CC`, `CFLAGS`, `LDFLAGS`, and `TARGET` variables are set for compiling and linking, and should be adjusted if your setup differs.

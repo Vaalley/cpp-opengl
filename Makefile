@@ -1,10 +1,11 @@
 CC=g++
-CFLAGS=-ldl -lglfw
+CFLAGS=-Iinclude
+LDFLAGS=-ldl -lglfw
 TARGET=learning-opengl
 
 all:
-	sudo $(CC) learning-opengl.cpp src/glad.c $(CFLAGS) -o $(TARGET)
-	sudo ./$(TARGET)
+	sudo $(CC) main.cpp src/glad.c $(CFLAGS) $(LDFLAGS) -o $(TARGET)
+	./$(TARGET)
 
 clean:
 	sudo rm -f $(TARGET)
